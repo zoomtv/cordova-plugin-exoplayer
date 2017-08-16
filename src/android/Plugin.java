@@ -35,7 +35,7 @@ public class Plugin extends CordovaPlugin {
     public boolean execute(final String action, final JSONArray data, final CallbackContext callbackContext) throws JSONException {
         try {
             final Plugin self = this;
-            if (action.equals("show")) {
+            if (action.equals("init")) {
                 cordova.getActivity().runOnUiThread(new Runnable() {
                     public void run() {
                         if (self.player != null) {
@@ -47,6 +47,34 @@ public class Plugin extends CordovaPlugin {
                         new CallbackResponse(callbackContext).send(PluginResult.Status.NO_RESULT, true);
                     }
                 });
+                return true;
+            }
+
+            if (action.equals("show")) {
+                if (self.player == null) {
+                    return false;
+                }
+                cordova.getActivity().runOnUiThread(new Runnable() {
+                    public void run() {
+                        self.player.show();
+                        new CallbackResponse(callbackContext).send(PluginResult.Status.NO_RESULT, true);
+                    }
+                });
+
+                return true;
+            }
+
+            if (action.equals("hide")) {
+                if (self.player == null) {
+                    return false;
+                }
+                cordova.getActivity().runOnUiThread(new Runnable() {
+                    public void run() {
+                        self.player.hide();
+                        new CallbackResponse(callbackContext).send(PluginResult.Status.NO_RESULT, true);
+                    }
+                });
+
                 return true;
             }
             else if (action.equals("setStream")) {
